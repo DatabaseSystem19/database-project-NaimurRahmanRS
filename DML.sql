@@ -48,3 +48,42 @@ INSERT INTO applications VALUES(3010, 2009, 1009, 'Rejected');
 INSERT INTO applications VALUES(3011, 2010, 1010, 'Accepted');
 INSERT INTO applications VALUES(3012, 2006, 1006, 'Rejected');
 
+--Displaying table data using SELECT command
+select * from companies where category = 'Multinational Technology';
+
+--Displaying table data using subquery
+select * from companies where company_id = (select company_id from jobs where job_id = 2006);
+
+--Updating the data in a table
+update jobs set job_title = 'Informatics Engineer' where job_id = 2008;
+
+--Deleting row from a table
+INSERT INTO jobs VALUES(2011, 'Data Scientist', 0010, 'Full Time', 25000, 'BSc in CSE');
+delete from jobs where job_id = 2011;
+
+--union, intersect, and except
+select company_name from companies where company_name like 'S%' union select company_name from companies where company_name like '%o%';
+select company_name from companies where company_name like 'S%' INTERSECT select company_name from companies where company_name like '%o%';
+select company_name from companies where company_name like 'S%' EXCEPT select company_name from companies where company_name like '%o%';
+
+--With clause
+with max_salary(val) as (select max(salary) from jobs)
+select * from jobs, max_salary where jobs.salary = max_salary.val;
+
+--Aggregate function
+--count how many row exist
+select count(*) from companies;
+--give alias name to any output in select command
+select count(category) as number_of_categories from companies;
+--count distinct
+select count(distinct category) as number_of_categories from companies;
+--count average and total
+select avg(salary) from jobs;
+select sum(salary) from jobs;
+--find max and min
+select max(salary) from jobs;
+select min(salary) from jobs;
+
+--Group by and Having
+select job_type, avg(salary) from jobs group by job_type;
+select job_type, avg(salary) from jobs group by job_type having avg(salary) > 18000;
