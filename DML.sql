@@ -29,7 +29,7 @@ INSERT INTO jobs VALUES(2003, 'Graphics Designer', 0002, 'Contract', 2000, 'HSC'
 INSERT INTO jobs VALUES(2004, 'Software Developer', 0001, 'Part Time', 8000, 'Bsc in CSE');
 INSERT INTO jobs VALUES(2005, 'Chip Designer', 0005, 'Full Time', 25000, 'Bsc in EEE');
 INSERT INTO jobs VALUES(2006, 'Software Engineer', 0009, 'Full Time', 50000, 'BSc in Computer Science');
-INSERT INTO jobs VALUES(2007, 'Data Analyst', 0007, 'Part Time', 25000, 'BSc in Mathematics');
+INSERT INTO jobs VALUES(2007, 'Data Analyst', 0006, 'Part Time', 25000, 'BSc in Mathematics');
 INSERT INTO jobs VALUES(2008, 'Web Developer', 0006, 'Contract', 3000, 'BSc in Information Technology');
 INSERT INTO jobs VALUES(2009, 'UI/UX Designer', 0008, 'Full Time', 40000, 'BSc in Multimedia');
 INSERT INTO jobs VALUES(2010, 'Data Scientist', 0010, 'Part Time', 35000, 'BSc in Statistics');
@@ -87,3 +87,56 @@ select min(salary) from jobs;
 --Group by and Having
 select job_type, avg(salary) from jobs group by job_type;
 select job_type, avg(salary) from jobs group by job_type having avg(salary) > 18000;
+
+--Nested subquery
+ select company_name from companies where company_id =
+ (select company_id from jobs where job_id =
+ (select job_id from applications where app_id = 3003));
+
+ --Set Membership (AND, OR, NOT)
+select * from companies where category = 'Multinational Technology' and company_id in (select company_id from jobs where education like '%CSE%');
+select * from jobs where salary > some(select salary from jobs where salary >= 20000);
+select * from jobs where salary > all(select salary from jobs where salary >= 20000);
+select * from jobs where salary >= 20000 and exists(select * from companies where category like '%Multinational Technology%');
+
+--String operations
+--beginning with H
+SELECT * FROM jobs where education like 'H%';
+--ending with e
+SELECT * FROM jobs where education like '%E';
+--contains c & E
+SELECT * FROM jobs where education like '%C%E%';
+--character length 3
+SELECT * FROM jobs where education like '___';
+--character length 3 or 10
+SELECT * FROM jobs where education like '___' or education like '__________';
+
+--Join operations
+--natural JOIN
+select * from companies natural join jobs where company_id = 0001;
+select * from companies natural join jobs;
+--join using
+select company_name, job_title from companies join jobs using(company_id);
+--on and relation
+select company_name, job_title from companies join jobs on companies.company_id = jobs.company_id;
+--left outer join
+select company_name, job_title from companies left outer join jobs using(company_id);
+select company_name, job_title from companies left outer join jobs on companies.company_id = jobs.company_id;
+--right outer join
+select company_name, job_title from companies right outer join jobs using(company_id);
+--full outer join
+select company_name, job_title from companies full outer join jobs using(company_id);
+
+--Views
+drop VIEW custom;
+drop VIEW company_details;
+drop VIEW Apple_Jobs;
+--without other ATTRIBUTES
+create view company_details as select company_id, company_name from companies;
+SELECT * from company_details;
+--as a combination
+create view Apple_Jobs as select job_title from jobs where company_id = (select company_id from companies where company_name = 'Apple');
+SELECT * from Apple_Jobs;
+--Using Other Views
+create view custom as select * from company_details where company_id >= 0006;
+SELECT * from custom;

@@ -36,11 +36,12 @@ CREATE TABLE jobs (
     job_id INTEGER NOT NULL,
     job_title VARCHAR(40) NOT NULL,
     company_id INTEGER NOT NULL,
-    job_type VARCHAR(40),
+    job_type VARCHAR(40) CHECK (job_type IN ('Full Time', 'Part Time', 'Contract', 'Temporary', 'Remote')),
     salary NUMBER(20),
     education VARCHAR(40),
     PRIMARY KEY (job_id),
     FOREIGN KEY (company_id) REFERENCES companies(company_id)
+    on delete cascade
 );
 
 -- Create the applications table
@@ -52,6 +53,7 @@ CREATE TABLE applications (
     PRIMARY KEY (app_id),
     FOREIGN KEY (job_id) REFERENCES jobs(job_id),
     FOREIGN KEY (user_id) REFERENCES users(user_id)
+    on delete cascade
 );
 
 -- Add column in the table
