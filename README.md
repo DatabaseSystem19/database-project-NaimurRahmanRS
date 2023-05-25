@@ -7,4 +7,4 @@ Year: 3rd <br>
 Semester: 1st <br>
 
 # Schema Design
-![My Image](images/Schema-design.jpg)
+![Schema Design](../Images/Schema-design.jpg)
