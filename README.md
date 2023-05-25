@@ -5,3 +5,6 @@ Roll No: 1907031 <br>
 Group: A2 <br>
 Year: 3rd <br>
 Semester: 1st <br>
+
+# Schema Design
+![My Image](images/Schema-design.jpg)
